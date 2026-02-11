@@ -5,7 +5,6 @@
 <title>Abhinav ❤️ Kankana</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Softer romantic font -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -22,7 +21,16 @@ h1,h2,h3{font-family:'Playfair Display',serif}
 .container{max-width:900px;margin:auto;padding:40px 20px}
 .card{background:var(--card);border-radius:22px;padding:30px;margin:25px 0;backdrop-filter:blur(14px);}
 img{max-width:100%;border-radius:20px}
-button{background:#fff;color:#ff4f81;border:none;padding:14px 26px;border-radius:30px;cursor:pointer;font-size:1rem;margin:8px;}
+button{
+  background:#fff;
+  color:#ff4f81;
+  border:none;
+  padding:14px 26px;
+  border-radius:30px;
+  cursor:pointer;
+  font-size:1rem;
+  margin:8px;
+}
 footer{margin:40px 0 10px;font-size:.9rem;opacity:.85}
 
 .heartbeat{
@@ -38,7 +46,23 @@ footer{margin:40px 0 10px;font-size:.9rem;opacity:.85}
   100%{transform:scale(1)}
 }
 
-#lock,#final,#hiddenLove{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.callBtn{
+  animation:callBeat 1.8s infinite;
+  box-shadow:0 0 18px rgba(255,255,255,.7);
+}
+@keyframes callBeat{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+
+#lock,#final,#hiddenLove{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center
+}
 #lock{background:linear-gradient(135deg,#ff9a9e,#fad0c4);z-index:10}
 #final{background:linear-gradient(135deg,#ff9a9e,#fad0c4);z-index:20;display:none}
 #hiddenLove{background:rgba(0,0,0,.6);z-index:30;display:none}
@@ -66,11 +90,20 @@ footer{margin:40px 0 10px;font-size:.9rem;opacity:.85}
 <div id="final">
   <div class="card">
     <h2>Happy Valentine’s Day ❤️</h2>
-    <p>
-      Kankana, this little website will disappear one day…<br>
-      but what I feel for you won’t.<br><br>
-      Thank you for choosing me, again and again!
-    </p>
+
+    <p id="finalMessage" style="min-height:4rem;"></p>
+
+    <div id="callSection" style="opacity:0; transition:opacity 1.8s; margin-top:25px;">
+      <p style="font-size:1.05rem;">
+        If this made you smile even a little…<br>
+        <span style="opacity:.9">tap here and let me hear your voice.</span>
+      </p>
+      <a href="tel:+919198687556" style="text-decoration:none;">
+        <button class="callBtn">💬 Call Abhinav</button>
+      </a>
+    </div>
+
+    <br>
     <button onclick="goBack()">Back to our little love corner 💕</button>
     <p style="margin-top:20px;">— Abhinav</p>
   </div>
@@ -132,7 +165,6 @@ function unlock(){
   }
 }
 
-/* Long press secret */
 let pressTimer;
 const area=document.getElementById('pressArea');
 area.addEventListener('mousedown',startPress);
@@ -150,13 +182,11 @@ function startPress(){
 function cancelPress(){clearTimeout(pressTimer);}
 function closeHidden(){document.getElementById('hiddenLove').style.display='none';}
 
-/* Typewriter */
 const msg="Hey Kankana… this little corner of the internet exists for one reason — to hold a tiny reflection of the love I carry for you every single day.";
 let ti=0;
 const typeEl=document.getElementById('type');
 setInterval(()=>{if(ti<msg.length){typeEl.textContent+=msg.charAt(ti);ti++;}},40);
 
-/* Countdown */
 const start=new Date('2024-10-19T00:00:00');
 setInterval(()=>{
   const d=new Date()-start;
@@ -167,7 +197,6 @@ setInterval(()=>{
   `${days} days, ${hrs} hours, ${mins} minutes`;
 },1000);
 
-/* Valentine logic */
 function yes(){
   vibrate([100,50,100,50,200]);
   const text="Kankana, no matter what life brings, I choose you today, tomorrow, and always. With you, everything feels right... মোৰ মৰমৰ কংকনা, মই তোমাক ভাল পাওঁ! ❤️";
@@ -190,20 +219,34 @@ function no(){
   vibrate([100,50,100]);
 }
 
-/* Final screen */
 function showFinal(){
   document.getElementById('final').style.display='flex';
   vibrate([200,100,200]);
-  setTimeout(()=>{
-    document.querySelector('#final button').textContent="I’m not done smiling yet 💕";
-  },6000);
+
+  const finalText="Kankana, this little website will disappear one day… but what I feel for you won’t. Thank you for choosing me, again and again!";
+  const el=document.getElementById('finalMessage');
+  el.textContent='';
+  let i=0;
+
+  const t=setInterval(()=>{
+    if(i<finalText.length){
+      el.textContent+=finalText.charAt(i);
+      i++;
+    }else{
+      clearInterval(t);
+      setTimeout(()=>{
+        document.getElementById('callSection').style.opacity=1;
+        vibrate([80,40,80]);
+      },800);
+    }
+  },40);
 }
+
 function goBack(){
   document.getElementById('final').style.display='none';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* Floating hearts */
 const hearts=['💖','💕','💗','💘'];
 setInterval(()=>{
   const h=document.createElement('div');
@@ -214,7 +257,6 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),7000);
 },900);
 
-/* Confetti */
 function confetti(){
   for(let i=0;i<120;i++){
     const c=document.createElement('div');
@@ -227,7 +269,6 @@ function confetti(){
   }
 }
 
-/* Music auto fade-in */
 function fadeInMusic(){
   const song=document.getElementById('song');
   song.volume=0;
